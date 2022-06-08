@@ -10,7 +10,7 @@ std::thread t1(add_42, std::ref(z));
 The reason we use std::ref(z) here instead of just supplying z, is because threads in C++ STL copy supplied values without
 converting to the expected argument type (in this case reference), so we wrap z in std::ref.
 
-t1 here accepts the functor add_42, and passes std::ref(z) to its operator method.
+t1 here accepts the functor add_42, and passes std::ref(z) to its operator method. Normally, std::ref is not necessary.
 
 std::thread t2 = std::move(t1);
 

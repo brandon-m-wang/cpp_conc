@@ -1,0 +1,14 @@
+There is a data race for the resource std::cout.
+
+We avoid this by wrapping our print in a shared function that locks the resource using mutex and lock_guard.
+
+std::lock_guard<std::mutex> guard(mu);
+
+A reminder that <std::mutex> tells the lock_guard constructor<T> that the type we are specifying is std::mutex. lock_guard
+implements the RAII (Resource Acquisition is Initialization)/SBRM (Scope Based Resource Management) technique by ensuring
+that once the lock_guard goes out of scope, the mutex will always be unlocked. This means that even should the shared_print
+function throw an exception, it will unlock. It unlocks when the function returns/completes as well (leaving scope).
+
+The resource std::cout is not completely encapsulated by the mutex mu. This is because std::cout is a global variable. In
+order to protect the resource completely, the mutex must be bounded to the resource which it is protecting: see
+data_race_logfile.cpp.

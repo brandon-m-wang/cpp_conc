@@ -1,4 +1,0 @@
-The importance of using a Functor as a stand-in for a regular function to be passed in to the STL thread constructor:
-    - RAII/SBRM (Resource Acquisition Is Initialization/Scope Bound Resource Management)
-    - If an exception is thrown in the main thread, then program will segfault since t1 will never be joined.
-    - Functors allow for the encapsulation of the function to be run in a given thread. 
