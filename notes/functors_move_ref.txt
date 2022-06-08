@@ -1,0 +1,27 @@
+We can provide more than just functions for thread execution -- functors are an example of this. 
+
+In the code, the functor is defined via struct instead of by class, the only difference here is that struct members are 
+public by default, while class members are private by default. The colon followed by x(x_val) preceding the functor 
+constructor's body is called an initialization list. Here we can initialize declared variables in the struct to be whatever;
+in this case, x is assigned to x_val which is provided to the constructor as a parameter.
+
+std::thread t1(add_42, std::ref(z));
+
+The reason we use std::ref(z) here instead of just supplying z, is because threads in C++ STL copy supplied values without
+converting to the expected argument type (in this case reference), so we wrap z in std::ref.
+
+t1 here accepts the functor add_42, and passes std::ref(z) to its operator method.
+
+std::thread t2 = std::move(t1);
+
+After t1 finishes running, we move ownership of t1 to t2 using the std::move method. std::move converts values into xvalues,
+which are essentially values that are slated to be destroyed soon and denotes a reusable resource. "You can plunder me, move
+anything I'm holding and use it elsewhere (since I'm going to be destroyed soon anyway)." The thread t1 in memory becomes
+assigned to t2 without ever creating an extraneous copy.
+
+A refresher on initialization in C++
+
+T a( b ); This is direct initialization
+
+T a = b; This is copy initialization
+Where a temporary object is created on the right-hand side (rvalue), and a is then copy-constructed from that temporary.
