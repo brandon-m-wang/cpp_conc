@@ -1,0 +1,24 @@
+Here, we have a very shitty implementation of a stack. Our interface gives access to two methods, pop and top. pop actually
+takes the element off the stack, while top returns the element at the top of the stack.
+
+We have two threads t1, t2 competing for the same resource, the stack st. Normally, running the same function on two separate
+threads is fine since each thread creates its own variables on the stack, and the parameters are pass by value by default.
+However, in this case, we pass the stack by reference. This means both threads are working on the exact same stack.
+
+The data race occurs when both threads are attempting to modify the resource (st) at the same time. On many occassions, the
+stack is being popped by one thread, and then popped by the other before either of them get a chance to make the next call to 
+top. So many elements end up getting skipped. 
+
+They may also appear in random order, e.g. 10, 10, 8, 7, 5, 4, 3, 7, 2, 1. This occurs because one thread runs for an extended
+period of time, topping and popping and printing for many iterations, and only then does the other thread hit its print
+statement, giving extremely outdated information on the stack.
+
+While the pop method itself is technically thread-safe, as it protects the resource from simultaneous popping, the way that
+function_1 is written causes out of order popping anyway. This is an issue with the interface, since we should just combine
+pop and top, that way we will always get each element only once and in order.
+
+And so, there are a few things that can be done to avoid a data race conditions:
+    - Using mutex to synchronize access (data_race_cout.cpp)
+    - Never leak the handling of protected resources outside the class (data_race_logfile.cpp)
+    - Design interfaces appropriately to avoid data race and self-deadlock (data_race_stack.cpp)
+        - Scope Bounded Resource Management (std::lock_guard)

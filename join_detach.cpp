@@ -7,9 +7,7 @@ void function_1() {
     }
 }
 
-void function_2() {
-    std::cout << "Short print." << std::endl;
-}
+void function_2() { std::cout << "Short print." << std::endl; }
 
 int main() {
     std::thread t1(function_1);

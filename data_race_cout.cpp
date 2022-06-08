@@ -1,6 +1,6 @@
 #include <iostream>
-#include <thread>
 #include <mutex>
+#include <thread>
 
 std::mutex mu;
 
@@ -19,8 +19,8 @@ int main() {
     std::thread t1(function_1);
 
     for (int i = 0; i < 100; i++) {
-        shared_print("From main: ", i);  
-    } 
+        shared_print("From main: ", i);
+    }
 
     t1.join();
 

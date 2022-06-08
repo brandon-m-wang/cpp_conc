@@ -1,0 +1,4 @@
+This is an example of where a resource is completely protected by a mutex, in this case the ofstream f is the resource in
+question.
+
+The last two members of the LogFile class are examples of leaking your protected resource to the outside world.
