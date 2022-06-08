@@ -1,0 +1,16 @@
+Sanity check: mutexes only make sense depending on how you use them. Its also like a bathroom door. We defined a mutex as a
+member of the BankAccount class. Simply initializing this mutex does not achieve anything in particular. It is how it is used.
+In this case, we can use it to provide a mutex to every instance of BankAccount that gets created instead of having to spam 
+global variables.
+
+:: (scope resolution) vs . (dot operator)
+
+:: is used to access something further in a class/namespace (e.g. nested class), or to access static functions. Dot operator
+operates how it would be expected to.
+
+We have achieved deadlock in this example. We start running two threads, one that represents ba1 depositing into ba2, and the
+other representing ba2 depositing into ba1, simultaneously. The issue here is that there could eventually come a sequence in
+which t1 is waiting to acquire the lock on ba2, while t2 is waiting to acquire the lock on ba1.
+
+There are two workarounds to this: manual ordering of locking (deadlock_account_manual_ordering.cpp) and std::lock()
+(deadlock_account_std_lock.cpp).

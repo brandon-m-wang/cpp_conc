@@ -9,7 +9,7 @@ class stack {
     int _size;
     std::mutex _mu;
 
-   public:
+  public:
     stack(int *lst, int size) : _size(size) {
         _data = (int *)malloc(_size * sizeof(int));
         memcpy(_data, lst, _size * sizeof(int));

@@ -6,9 +6,9 @@
 // value
 struct add_x {
     add_x(int x_val) : x(x_val) {}
-    void operator()(int& y) { y += x; }
+    void operator()(int &y) { y += x; }
 
-   private:
+  private:
     int x;
 };
 
