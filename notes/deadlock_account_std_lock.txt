@@ -1,0 +1,7 @@
+The std::lock() function takes a variable number of lockable objects and attempts to lock them such that deadlock does not 
+occur. In typical implementations, this is done by using a combination of lock(), try_lock(), and unlock() to attempt to lock 
+the object and backing off if the lock is not acquired, which may have worse performance than a solution that locks in 
+predefined order explicitly.
+
+We use a lock_guard to still ensure that the mutexes are unlocked at the end of the block's scope. std::adopt_lock makes the
+lock_guard assume that the executing thread already has ownership of the mutex.
