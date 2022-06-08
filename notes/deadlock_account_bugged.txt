@@ -12,5 +12,8 @@ We have achieved deadlock in this example. We start running two threads, one tha
 other representing ba2 depositing into ba1, simultaneously. The issue here is that there could eventually come a sequence in
 which t1 is waiting to acquire the lock on ba2, while t2 is waiting to acquire the lock on ba1.
 
+For reproducibility's sake, we implement a lambda function in the thread's construction to run deposit up to a thousand times
+until deadlock occurs.
+
 There are two workarounds to this: manual ordering of locking (deadlock_account_manual_ordering.cpp) and std::lock()
 (deadlock_account_std_lock.cpp).
