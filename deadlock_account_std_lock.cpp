@@ -56,14 +56,8 @@ int main() {
                 deposit(ba1, ba2, amount);
             }
         },
-        &ba1, &ba2, 1);
-    std::thread t2(
-        [=](BankAccount *ba1, BankAccount *ba2, int amount) {
-            for (int i = 0; i < 1000; i++) {
-                deposit(ba1, ba2, amount);
-            }
-        },
-        &ba2, &ba1, 1);
+        &ba1, &ba2, 5);
+    std::thread t2(deposit, &ba2, &ba1, 1);
 
     t1.join();
     t2.join();

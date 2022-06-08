@@ -1,0 +1,10 @@
+In a scenario where we are only locking on a trivial number of threads, we can just force the ordering of the locks to be
+the same every time. This makes it impossible to create a deadlock situation. In this case, we force the mutex to be locked
+in order of the unique bank account id, in ascending order.
+
+Atomics types are those for which reading and writing are guaranteed to happen in a single instruction, thus data race is not 
+possible on atomic types. We use an atomic type for the global_id as a design choice, since it is a global static variable.
+In the event of massive user registration, the global_id must be updated accordingly without fail, since our underlying 
+deadlock avoidance measures relies on this global_id.
+
+Now the program runs to completion with no deadlock.
