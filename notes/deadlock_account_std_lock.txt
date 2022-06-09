@@ -5,3 +5,17 @@ predefined order explicitly.
 
 We use a lock_guard to still ensure that the mutexes are unlocked at the end of the block's scope. std::adopt_lock makes the
 lock_guard assume that the executing thread already has ownership of the mutex.
+
+As a recap:
+
+Avoiding deadlock
+    - Prefer locking single mutex
+    - Avoid locking a mutex, then calling a user provided function
+    - Use std::lock() to lock more than one mutex
+        - However, this has more latency than a pre-defined ordering (as in manual ordering if possible)
+
+Locking granularity
+    - Fine-grained lock: protects small amount of data
+        - If your locks are too fine-grained, then your program becomes tricky and more exposed to deadlocks
+    - Coarse-grained lock: protects big amount of data
+        - If your locks are too coarse-grained, your program becomes more sequential and lose out on parallel computing

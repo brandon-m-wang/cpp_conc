@@ -1,0 +1,5 @@
+std::unique_lock offers a lot more flexibility than std::lock_guard, but it is considerably heavier and therefore slower in
+a high-frequency context. Lazy initialization is also a useful too in low-latency programming. In this example, we don't open
+the file until the first time shared_print is called. This allows for speeding up massive initialization without wasting
+compute on opening and keeping many files open. We use std::call_once to achieve this without checking for the file each time,
+yet another optimization.
