@@ -1,0 +1,18 @@
+This has been optimized, since we utilize conditional variables to notify the thread in the consumer function to wake, and
+to sleep if the predicate is not satisfied, waking up only when signaled.
+
+Say t1 finishes its entire execution before t2 even begins. This means the deque is fully populated with no more incoming
+notify operations coming from t1 (no more waking up threads). This is fine, and t2 (the consumer function) is still able to
+retrieve all data in the deque since it will never be put to sleep prematurely (the deque is populated so the predicate is
+going to be false at all times until it finishes executing).
+
+Having a predicate also guards against spurious wakes which cause unintended effects.
+
+"Just think of it... like any code, thread scheduler may experience temporary blackout due to something abnormal happening in
+underlying hardware / software. Of course, care should be taken for this to happen as rare as possible, but since there's no 
+such thing as 100% robust software it is reasonable to assume this can happen and take care on the graceful recovery in case 
+if scheduler detects this (eg by observing missing heartbeats).
+
+Now, how could scheduler recover, taking into account that during blackout it could miss some signals intended to notify 
+waiting threads? If scheduler does nothing, mentioned "unlucky" threads will just hang, waiting forever - to avoid this, 
+scheduler would simply send a signal to all the waiting threads."

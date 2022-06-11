@@ -1,0 +1,2 @@
+This is an inefficient program since the thread running the consumer function will be performing a lot of busy waiting while
+locking up a shared resource (deque). The objective is to minimize the number of unnecessary lock acquisitions.
